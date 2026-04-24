@@ -1,14 +1,14 @@
-# Advanced Algorithms Project Plan
+# Project Plan
 
 ## Project Title
 
-Adaptive Keyframe Selection for YOLO11n-Based Fire and Smoke Video Detection
+Real-Time Fire and Smoke Detection with Adaptive YOLO11n Keyframe Selection
 
 ## Goal
 
-Build a video detection pipeline that uses YOLO11n to produce fire and smoke confidence scores, then implement and evaluate an adaptive keyframe selection algorithm that reduces the number of frames processed while preserving event coverage.
+Build a real-time video detection pipeline that uses YOLO11n to produce fire and smoke confidence scores, then implement and evaluate an adaptive keyframe selection algorithm that reduces video processing cost while preserving event coverage.
 
-The main contribution is the adaptive algorithm. YOLO11n is used as the scoring model that supplies frame-level detection evidence.
+The main technical contribution is the adaptive algorithm. YOLO11n is used as the scoring model that supplies frame-level detection evidence, with future deployment considerations for constrained edge devices such as Raspberry Pi or drone hardware.
 
 ## Methods to Compare
 
@@ -25,7 +25,7 @@ The main contribution is the adaptive algorithm. YOLO11n is used as the scoring 
 5. Run fixed-interval frame sampling baseline.
 6. Run adaptive keyframe selection over YOLO-derived confidence signals.
 7. Compare methods by processed-frame count, event coverage, missed-event rate, and runtime.
-8. Summarize algorithm design, results, and tradeoffs for the course presentation.
+8. Summarize algorithm design, results, runtime tradeoffs, and edge deployment considerations.
 
 ## Local Environment
 
@@ -47,5 +47,4 @@ Local development is intended for VS Code debugging, script development, and vid
 | Video baselines | Full-frame and fixed-interval inference outputs |
 | Algorithm | Adaptive dynamic-programming keyframe selector |
 | Evaluation | Comparison tables and figures |
-| Final report | Algorithm explanation, experiment log, and presentation notes |
-
+| Final report | Algorithm explanation, experiment log, and deployment-oriented technical summary |

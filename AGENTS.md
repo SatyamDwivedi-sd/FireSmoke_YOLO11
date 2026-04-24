@@ -2,7 +2,9 @@
 
 ## Project Intent
 
-This repository is for an Advanced Algorithms course project. The central contribution should be the adaptive keyframe selection algorithm, not only YOLO training.
+This repository is for a real-time fire and smoke video detection pipeline using YOLO11n. The central contribution should be adaptive keyframe selection to reduce video processing cost, not only YOLO training.
+
+Future design decisions should keep constrained edge deployment in mind, including Raspberry Pi and drone-mounted hardware.
 
 ## Constraints
 
@@ -33,4 +35,3 @@ Known local setup:
 - Training is expected to happen later on Colab T4 High-RAM.
 - Local Mac development is for VS Code, debugging, and video inference.
 - Store experiment notes in `reports/experiment_log.md`.
-

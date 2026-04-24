@@ -1,16 +1,16 @@
 # FireSmoke_YOLO11
 
-YOLO11n-based fire and smoke video detection pipeline with adaptive keyframe selection for an Advanced Algorithms course project.
+YOLO11n-based fire and smoke video detection pipeline with adaptive keyframe selection for reduced video processing cost.
 
 ## Project Goal
 
-The project compares three approaches for video fire/smoke detection:
+This project targets real-time fire and smoke detection in video. It compares three approaches:
 
 1. Full-frame YOLO inference
 2. Fixed-interval frame sampling
 3. Adaptive keyframe selection using dynamic programming
 
-YOLO11n provides fire/smoke confidence scores. The main research contribution is the adaptive algorithm that reduces processed frames while preserving fire/smoke event coverage.
+YOLO11n provides fire/smoke confidence scores. The main technical contribution is the adaptive keyframe selection algorithm, which reduces the number of processed frames while preserving fire/smoke event coverage. A longer-term goal is to support efficient deployment on constrained edge hardware such as Raspberry Pi or drone-mounted systems.
 
 ## Environment
 
@@ -59,4 +59,3 @@ archive/
 3. Train YOLO11n with `scripts/02_train_yolo11n.py` later on Colab.
 4. Run video baselines and adaptive selection scripts locally for debugging.
 5. Store metrics, tables, and figures under `results/`.
-
