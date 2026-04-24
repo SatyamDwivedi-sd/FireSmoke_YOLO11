@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environments
+.env
+.venv/
+venv/
+env/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# IDE/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Data and generated artifacts
+data/raw/*
+data/interim/*
+data/processed/*
+models/*
+videos/input/*
+videos/output/*
+results/frame_scores/*
+results/selected_keyframes/*
+results/comparison_tables/*
+results/figures/*
+archive/*
+
+# Keep placeholder README files
+!data/raw/README.md
+!data/interim/README.md
+!data/processed/README.md
+!models/README.md
+!videos/input/README.md
+!videos/output/README.md
+!results/frame_scores/README.md
+!results/selected_keyframes/README.md
+!results/comparison_tables/README.md
+!results/figures/README.md
+!archive/README.md
+
+# Model weights and exports
+*.pt
+*.onnx
+*.engine
+*.tflite
+
+# Media
+*.mp4
+*.mov
+*.avi
+*.mkv
+

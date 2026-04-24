@@ -1,0 +1,10 @@
+model: yolo11n.pt
+data: configs/data_template.yaml
+epochs: 100
+imgsz: 640
+batch: 16
+device: auto
+project: models
+name: yolo11n_firesmoke
+patience: 20
+
