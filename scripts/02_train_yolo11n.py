@@ -64,6 +64,12 @@ def parse_args():
         default=15,
         help="Early stopping patience. Default: 15.",
     )
+    parser.add_argument(
+        "--fraction",
+        type=float,
+        default=1.0,
+        help="Fraction of the dataset to use for quick debugging.",
+    )
     return parser.parse_args()
 
 
@@ -96,6 +102,7 @@ def print_training_settings(args, device):
     print(f"  project:  {args.project}")
     print(f"  name:     {args.name}")
     print(f"  patience: {args.patience}")
+    print(f"  fraction: {args.fraction}")
 
 
 def print_training_outputs(project, name):
@@ -118,6 +125,7 @@ def main():
         raise SystemExit(f"Error: data YAML not found: {args.data}")
 
     device = select_device(args.device)
+    project_dir = args.project.resolve()
     print(f"Selected device: {device}")
     print_training_settings(args, device)
 
@@ -131,9 +139,10 @@ def main():
         batch=args.batch,
         device=device,
         workers=args.workers,
-        project=str(args.project),
+        project=str(project_dir),
         name=args.name,
         patience=args.patience,
+        fraction=args.fraction,
     )
 
     print_training_outputs(args.project, args.name)
