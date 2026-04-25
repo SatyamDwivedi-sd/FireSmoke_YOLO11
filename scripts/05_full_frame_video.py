@@ -181,7 +181,7 @@ def main():
     annotated_video_path = None
     if args.save_video:
         annotated_video_path = Path("videos/output") / f"{args.video.stem}_full_frame.mp4"
-        video_writer = create_video_writer(annotated_video_path, fps, width, height)
+        video_writer = create_video_writer(args.video, annotated_video_path, fps, width, height)
 
     model = YOLO(str(args.model))
     rows = []
