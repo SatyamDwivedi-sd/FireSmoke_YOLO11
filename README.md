@@ -56,6 +56,6 @@ archive/
 
 1. Place dataset files under `data/raw/`.
 2. Copy `configs/data_template.yaml` and update dataset paths/classes.
-3. Train YOLO11n with `scripts/02_train_yolo11n.py` later on Colab.
+3. Train YOLO11n with `scripts/03_train_yolo11n.py` later on Colab.
 4. Run video baselines and adaptive selection scripts locally for debugging.
 5. Store metrics, tables, and figures under `results/`.
