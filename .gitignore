@@ -58,3 +58,6 @@ archive/*
 *.avi
 *.mkv
 
+
+# Training outputs
+runs/
