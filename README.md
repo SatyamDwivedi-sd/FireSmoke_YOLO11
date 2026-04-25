@@ -54,8 +54,11 @@ archive/
 
 ## Initial Workflow
 
-1. Place dataset files under `data/raw/`.
-2. Copy `configs/data_template.yaml` and update dataset paths/classes.
-3. Train YOLO11n with `scripts/03_train_yolo11n.py` later on Colab.
-4. Run video baselines and adaptive selection scripts locally for debugging.
-5. Store metrics, tables, and figures under `results/`.
+1. Place/download the raw D-Fire dataset under `data/raw/dfire/`.
+2. Optionally inspect the raw dataset with `scripts/01_check_dataset.py`.
+3. Prepare the clean processed dataset using `scripts/02_prepare_dfire_dataset.py`.
+4. Validate the processed dataset using `scripts/01_check_dataset.py`.
+5. Train YOLO11n using `scripts/03_train_yolo11n.py`.
+6. Validate the model using `scripts/04_validate_model.py`.
+7. Run video baselines and adaptive keyframe selection scripts.
+8. Store metrics, tables, and figures under `results/`.
