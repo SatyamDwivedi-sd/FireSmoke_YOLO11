@@ -32,6 +32,7 @@ Known local setup:
 ## Development Notes
 
 - Scripts should accept paths through command-line arguments or config files.
-- Training is expected to happen later on Colab T4 High-RAM.
+- Training was performed on Google Colab T4 GPU (50 epochs). Do not re-run training locally unless explicitly requested.
 - Local Mac development is for VS Code, debugging, and video inference.
 - Store experiment notes in `reports/experiment_log.md`.
+- D-Fire class mapping: 0 = smoke, 1 = fire. Inference scripts override `model.model.names` and `result.names` after each `model.predict()` call to ensure annotated outputs use the corrected labels.
