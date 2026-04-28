@@ -210,6 +210,8 @@ def main():
         video_writer = create_video_writer(annotated_video_path, fps, width, height)
 
     model = YOLO(str(args.model))
+    model.names = {0: "smoke", 1: "fire"}
+    model.model.names = {0: "smoke", 1: "fire"}
     rows = []
     max_event_score = 0.0
     processed_frames = 0

@@ -369,6 +369,8 @@ def main():
         raise SystemExit(f"Error: could not determine total frame count for video: {args.video}")
 
     model = YOLO(str(args.model))
+    model.names = {0: "smoke", 1: "fire"}
+    model.model.names = {0: "smoke", 1: "fire"}
     sampled_rows = []
     sampled_window = []
     sampled_scores = []
