@@ -7,8 +7,8 @@ import time
 from pathlib import Path
 
 
-FIRE_CLASS_ID = 0
-SMOKE_CLASS_ID = 1
+SMOKE_CLASS_ID = 0
+FIRE_CLASS_ID = 1
 
 
 def parse_args():

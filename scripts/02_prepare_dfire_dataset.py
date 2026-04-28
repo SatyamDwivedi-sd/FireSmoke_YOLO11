@@ -183,10 +183,11 @@ def write_data_yaml(output_root):
         f"val: {valid_images}\n"
         f"test: {test_images}\n"
         "nc: 2\n"
-        "names: ['fire', 'smoke']\n"
+        "names: ['smoke', 'fire']\n"
     )
     data_yaml.write_text(content, encoding="utf-8")
     return data_yaml
+
 
 
 def prepare_output_root(output_root, overwrite):
