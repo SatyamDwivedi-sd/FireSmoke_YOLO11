@@ -184,7 +184,6 @@ def main():
         video_writer = create_video_writer(args.video, annotated_video_path, fps, width, height)
 
     model = YOLO(str(args.model))
-    model.names = {0: "smoke", 1: "fire"}
     model.model.names = {0: "smoke", 1: "fire"}
     rows = []
     max_event_score = 0.0
@@ -205,6 +204,7 @@ def main():
             verbose=False,
         )
         result = results[0]
+        result.names = {0: "smoke", 1: "fire"}
         max_fire_conf, max_smoke_conf, event_score, num_fire, num_smoke = frame_scores(result)
         max_event_score = max(max_event_score, event_score)
 

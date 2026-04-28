@@ -369,7 +369,6 @@ def main():
         raise SystemExit(f"Error: could not determine total frame count for video: {args.video}")
 
     model = YOLO(str(args.model))
-    model.names = {0: "smoke", 1: "fire"}
     model.model.names = {0: "smoke", 1: "fire"}
     sampled_rows = []
     sampled_window = []
@@ -401,6 +400,7 @@ def main():
                 verbose=False,
             )
             result = results[0]
+            result.names = {0: "smoke", 1: "fire"}
             max_fire_conf, max_smoke_conf, event_score, num_fire, num_smoke = frame_scores(result)
             max_event_score = max(max_event_score, event_score)
             processed_frames += 1
