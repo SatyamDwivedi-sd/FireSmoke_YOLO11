@@ -10,7 +10,7 @@ Compare three video inference strategies using YOLO11n as the frame scorer:
 2. **Fixed-interval baseline** — YOLO on every k-th frame (k=10)
 3. **Adaptive DP keyframe selection** — score-responsive variable-rate sampling with windowed dynamic programming keyframe selection
 
-The adaptive method reduces the number of processed frames and inference runtime while preserving fire/smoke event coverage.
+The adaptive method aims to reduce processed frames and inference runtime while preserving fire/smoke event coverage, especially in dynamic or harder videos.
 
 ## Environment
 
@@ -60,13 +60,13 @@ YOLO11n fine-tuned on D-Fire (21,527 images, 2 classes) on Colab T4 GPU:
 
 | Video | Full-frame | Fixed (k=10) | Adaptive DP | Detected |
 |---|---|---|---|---|
-| fire_smoke_test (597f) | 597f / 8.1s | 60f / 1.8s | 116f / 13.7s | All ✓ |
-| smoke_only_test (587f) | 587f / 8.2s | 59f / 2.5s | 118f / 31.0s | All ✓ |
-| normal_background (362f) | 362f / 3.8s | 37f / 1.0s | 14f / 1.2s | All ✗ |
+| fire_smoke_test (597f) | 597f / 8.1s | 60f / 1.8s | 116f / 2.5s | All ✓ |
+| smoke_only_test (587f) | 587f / 8.4s | 59f / 2.4s | 118f / 3.4s | All ✓ |
+| normal_background (362f) | 362f / 3.7s | 37f / 0.9s | 14f / 0.7s | All ✗ |
 | distant_smoke_fire (928f) | 928f / 9.3s | 93f / 1.8s | **58f / 1.5s** | All ✓ |
 | dynamic_wildfire_drone (1237f) | 1232f / 12.0s | 124f / 2.1s | **97f / 1.8s** | All ✓ |
-| hard_neg sunset/fog (476f) | 476f / 5.9s | 48f / 2.1s | 18f / 3.7s | All ✗ |
-| hard_neg clouds/fog (2400f) | 2400f / 32.2s | 240f / 8.4s | 301f / ~10s | All FP |
+| hard_neg sunset/fog (476f) | 476f / 5.9s | 48f / 2.1s | 18f / 1.8s | All ✗ |
+| hard_neg clouds/fog (2400f) | 2400f / 31.1s | 240f / 8.3s | 301f / 9.8s | All FP |
 
 ✓ = event correctly detected · ✗ = correctly rejected · FP = false positive (model limitation: cloud/fog textures activate the smoke class)
 
@@ -95,5 +95,4 @@ models/         trained model weights
 videos/input/   7 test MP4s
 results/        frame scores, comparison tables, figures, keyframes
 reports/        experiment log, algorithm explanation, per-video comparison reports
-archive/        reserved for superseded outputs
 ```
