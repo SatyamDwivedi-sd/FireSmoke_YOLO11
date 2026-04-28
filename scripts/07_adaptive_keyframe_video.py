@@ -7,8 +7,8 @@ import time
 from pathlib import Path
 
 
-FIRE_CLASS_ID = 0
-SMOKE_CLASS_ID = 1
+SMOKE_CLASS_ID = 0
+FIRE_CLASS_ID = 1
 
 
 def parse_args():
@@ -376,69 +376,72 @@ def main():
     max_event_score = 0.0
     processed_frames = 0
     sample_index = 0
-    frame_index = 0
+    current_frame_index = 0
+    next_sample_frame = 0
     step = args.base_step
     previous_score = None
     start_time = time.perf_counter()
 
     print(f"Processing {total_frames} frames with adaptive sampling...")
-    while frame_index < total_frames:
-        capture.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
+    while True:
         success, frame = capture.read()
         if not success:
             break
 
-        step_used = step
-        timestamp_sec = frame_index / fps if fps > 0 else 0.0
-        results = model.predict(
-            source=frame,
-            conf=args.conf,
-            imgsz=args.imgsz,
-            device=device,
-            verbose=False,
-        )
-        result = results[0]
-        max_fire_conf, max_smoke_conf, event_score, num_fire, num_smoke = frame_scores(result)
-        max_event_score = max(max_event_score, event_score)
-        processed_frames += 1
+        if current_frame_index >= next_sample_frame:
+            step_used = step
+            timestamp_sec = current_frame_index / fps if fps > 0 else 0.0
+            results = model.predict(
+                source=frame,
+                conf=args.conf,
+                imgsz=args.imgsz,
+                device=device,
+                verbose=False,
+            )
+            result = results[0]
+            max_fire_conf, max_smoke_conf, event_score, num_fire, num_smoke = frame_scores(result)
+            max_event_score = max(max_event_score, event_score)
+            processed_frames += 1
 
-        row = {
-            "frame_index": frame_index,
-            "timestamp_sec": f"{timestamp_sec:.6f}",
-            "max_fire_conf": f"{max_fire_conf:.6f}",
-            "max_smoke_conf": f"{max_smoke_conf:.6f}",
-            "event_score": f"{event_score:.6f}",
-            "num_fire_detections": num_fire,
-            "num_smoke_detections": num_smoke,
-            "processed": True,
-            "step_used": step_used,
-        }
-        sampled_rows.append(row)
+            row = {
+                "frame_index": current_frame_index,
+                "timestamp_sec": f"{timestamp_sec:.6f}",
+                "max_fire_conf": f"{max_fire_conf:.6f}",
+                "max_smoke_conf": f"{max_smoke_conf:.6f}",
+                "event_score": f"{event_score:.6f}",
+                "num_fire_detections": num_fire,
+                "num_smoke_detections": num_smoke,
+                "processed": True,
+                "step_used": step_used,
+            }
+            sampled_rows.append(row)
 
-        window_item = {
-            "sample_index": sample_index,
-            "frame_index": frame_index,
-            "timestamp_sec": timestamp_sec,
-            "event_score": event_score,
-            "max_fire_conf": max_fire_conf,
-            "max_smoke_conf": max_smoke_conf,
-            "frame": frame.copy(),
-        }
-        sampled_window.append(window_item)
-        if len(sampled_window) > args.window_size:
-            sampled_window.pop(0)
+            window_item = {
+                "sample_index": sample_index,
+                "frame_index": current_frame_index,
+                "timestamp_sec": timestamp_sec,
+                "event_score": event_score,
+                "max_fire_conf": max_fire_conf,
+                "max_smoke_conf": max_smoke_conf,
+                "frame": frame.copy(),
+            }
+            sampled_window.append(window_item)
+            if len(sampled_window) > args.window_size:
+                sampled_window.pop(0)
 
-        sampled_scores.append(event_score)
-        if len(sampled_window) == args.window_size:
-            add_selected_keyframes(sampled_window, selected_by_frame, args, keyframe_image_dir)
+            sampled_scores.append(event_score)
+            if len(sampled_window) == args.window_size:
+                add_selected_keyframes(sampled_window, selected_by_frame, args, keyframe_image_dir)
 
-        step = next_step(step, event_score, previous_score, sampled_scores, args)
-        previous_score = event_score
-        frame_index += max(args.min_step, step)
-        sample_index += 1
+            step = next_step(step, event_score, previous_score, sampled_scores, args)
+            previous_score = event_score
+            next_sample_frame = current_frame_index + max(args.min_step, step)
+            sample_index += 1
 
-        if processed_frames % 25 == 0:
-            print(f"  sampled {processed_frames} frames; next frame index {frame_index}")
+            if processed_frames % 25 == 0:
+                print(f"  sampled {processed_frames} frames; next frame index {next_sample_frame}")
+
+        current_frame_index += 1
 
     if sampled_window:
         add_selected_keyframes(sampled_window, selected_by_frame, args, keyframe_image_dir)
