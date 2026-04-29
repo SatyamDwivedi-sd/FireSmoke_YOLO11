@@ -74,16 +74,17 @@
 
   | Video | Winner (runtime) | Adaptive frames | Fixed frames | Notes |
   |---|---|---|---|---|
-  | fire_smoke_test (597f) | fixed (1.8s) | 116 / 80.6% reduction | 60 | All methods detect; scores agree |
-  | smoke_only_test (587f) | fixed (2.5s) | 118 / 79.9% reduction | 59 | All detect; adaptive slower due to seek bug (pre-fix) |
-  | normal_background_15sec (362f) | adaptive (1.2s) | 14 / 96.1% reduction | 37 | All correctly return False |
-  | distant_smoke_fire_test (928f) | **adaptive (3.1s)** | 58 / 93.8% reduction | 93 | Adaptive uses fewer frames, finds higher score (0.667 vs 0.655) |
-  | dynamic_wildfire_drone_test (1237f) | **adaptive (2.5s)** | 92 / 92.6% reduction | 124 | Adaptive matches full-frame max score (0.821) exactly |
-  | hard_neg sunset_fog (476f) | fixed (2.1s) | 18 / 96.2% reduction | 48 | All correctly return False |
-  | hard_neg clouds_fog (2400f) | fixed (8.4s) | 301 / 87.5% reduction | 240 | **All three methods false-positive** (score ~0.88); model limitation |
+  | fire_smoke_test (597f) | fixed (1.8s) | 116 / 80.6% reduction / 2.5s | 60 | All methods detect; fixed interval is cheapest for this always-visible event. |
+  | smoke_only_test (587f) | fixed (2.4s) | 118 / 79.9% reduction / 3.4s | 59 | All methods detect; fixed interval is cheapest for this mostly visible smoke event. |
+  | normal_background_test (362f) | adaptive (0.7s) | 14 / 96.1% reduction / 0.7s | 37 | All methods correctly reject; adaptive processes the fewest frames. |
+  | hard_negative_sunset_fog_test (476f) | adaptive (1.8s) | 18 / 96.2% reduction / 1.8s | 48 | All methods correctly reject; adaptive processes the fewest frames. |
+  | distant_smoke_fire_test (928f) | adaptive (1.5s) | 58 / 93.8% reduction / 1.5s | 93 | Adaptive beats fixed interval in both frame count and runtime. |
+  | dynamic_wildfire_drone_test (1237f) | adaptive (1.8s) | 97 / 92.2% reduction / 1.8s | 124 | Adaptive beats fixed interval in both frame count and runtime. |
+  | hard_negative_clouds_fog_test (2400f) | fixed (8.3s) | 301 / 87.5% reduction / 9.8s | 240 | All three methods false-positive due to fog/clouds; detector robustness limitation. |
 
 - **Notes:**
   - The adaptive script originally used `capture.set(CAP_PROP_POS_FRAMES, frame_index)` to seek to each sample point, causing repeated H.264 GOP decodes. This was fixed before the final run: the loop now decodes sequentially and skips YOLO on non-sample frames. Results in this log reflect the fixed implementation.
+  - The table above uses the final post-fix experiment results. On `hard_negative_clouds_fog_test`, the sequential-decoding fix improved adaptive runtime from about 96s to about 10s.
   - The clouds/fog false positive (score 0.883) is a known model limitation: cloud and sky textures activate the smoke detector at high confidence. It is not specific to the adaptive method — fixed-interval and full-frame both produce the same false positive.
   - Adaptive outperforms fixed-interval on frame count for `distant_smoke_fire` and `dynamic_wildfire_drone`, where its score-responsive sampling concentrates inference near high-activity regions.
   - The `hard_negative_clouds_fog` video (2400 frames, longest in the set) exposes the worst-case behavior of adaptive sampling: sustained high scores keep the step at `min_step`, resulting in more frames processed than fixed-interval.
